@@ -1,6 +1,25 @@
 ﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        header, .bform {
+            display: block;
+            text-align: center;
+        }
+
+        input, button {
+            display: inline-block;
+            padding: 10px;
+            font-size: 14px;
+        }
+    </style>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Registration of users in WebAppi." />
@@ -17,10 +36,7 @@
               crossorigin="anonymous">
     </noscript>
 
-    <link rel="preload"
-          href="index.css"
-          as="style"
-          onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="index.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="index.css"></noscript>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
@@ -29,14 +45,29 @@
           href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap"
           as="style"
           onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap"></noscript>
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap">
+    </noscript>
 </head>
-
 
 <body>
     <div id="bg-compare">
-        <img class="bg bg-left" src="images/1.webp" alt="background left" fetchpriority="high" decoding="async">
-        <img class="bg bg-right" src="images/2.webp" alt="background right" loading="lazy" decoding="async">
+        <img class="bg bg-left"
+             src="images/1.webp"
+             alt="background left"
+             fetchpriority="high"
+             decoding="async"
+             width="1920"
+             height="1080"
+             style="aspect-ratio:16/9;">
+        <img class="bg bg-right"
+             src="images/2.webp"
+             alt="background right"
+             loading="lazy"
+             decoding="async"
+             width="1920"
+             height="1080"
+             style="aspect-ratio:16/9;">
         <div class="divider"></div>
     </div>
 
@@ -45,8 +76,12 @@
             <h4 class="m-0">WebAppi</h4>
         </div>
         <nav class="nav-links d-flex align-items-center flex-wrap">
-            <a href="https://hh.ru/resume/10f4e9f6ff090cdf7a0039ed1f424742775148" class="nav-item mx-2 text-dark" rel="noopener">HH.ru</a>
-            <a href="https://github.com/kogdaKak/Minore" class="nav-item mx-2 text-dark" rel="noopener">GitHub</a>
+            <a href="https://hh.ru/resume/10f4e9f6ff090cdf7a0039ed1f424742775148"
+               class="nav-item mx-2 text-dark"
+               rel="noopener">HH.ru</a>
+            <a href="https://github.com/kogdaKak/Minore"
+               class="nav-item mx-2 text-dark"
+               rel="noopener">GitHub</a>
         </nav>
     </header>
 
@@ -79,7 +114,6 @@
             box.classList.remove("d-none", "alert-success", "alert-danger", "show");
             box.classList.add(ok ? "alert-success" : "alert-danger");
             box.textContent = text;
-
             requestAnimationFrame(() => box.classList.add("show"));
             setTimeout(() => {
                 box.classList.remove("show");
@@ -104,10 +138,8 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ login, password })
                 });
-
                 const result = await response.json();
                 showMessage(result.message, result.ok);
-
                 if (result.ok) {
                     loginInput.value = "";
                     passInput.value = "";
@@ -119,11 +151,17 @@
 
         (() => {
             const left = document.querySelector('#bg-compare .bg-left');
-            const divider = document.querySelector('#bg-compare .divider');
-            if (!left || !divider) return;
+            if (!left) return;
 
             const periodMs = 10000;
             const fullTurnMs = periodMs * 2;
+            let w = window.innerWidth;
+            let h = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                w = window.innerWidth;
+                h = window.innerHeight;
+            });
 
             function computeSplitPolygon(angleRad, w, h) {
                 const cx = w / 2, cy = h / 2;
@@ -131,8 +169,8 @@
                 const ny = Math.sin(angleRad);
                 const vx = -Math.sin(angleRad);
                 const vy = Math.cos(angleRad);
-
                 const points = [];
+
                 function tryEdge(t, getX, getY) {
                     if (!isFinite(t)) return;
                     const x = getX(t), y = getY(t);
@@ -148,6 +186,7 @@
                     let t = (0 - cy) / vy; tryEdge(t, (t) => cx + t * vx, () => 0);
                     t = (h - cy) / vy; tryEdge(t, (t) => cx + t * vx, () => h);
                 }
+
                 if (points.length < 2)
                     return `polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)`;
 
@@ -164,19 +203,10 @@
             }
 
             let start = performance.now();
-
             function tick(now) {
-                let w = window.innerWidth;
-                let h = window.innerHeight;
-                window.addEventListener('resize', () => {
-                    w = window.innerWidth;
-                    h = window.innerHeight;
-                });
-
                 const elapsed = (now - start) % fullTurnMs;
                 const angle = (elapsed / fullTurnMs) * Math.PI * 2;
-                const poly = computeSplitPolygon(angle, w, h);
-                left.style.clipPath = poly;
+                left.style.clipPath = computeSplitPolygon(angle, w, h);
                 requestAnimationFrame(tick);
             }
             requestAnimationFrame(tick);
