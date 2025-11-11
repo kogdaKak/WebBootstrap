@@ -17,7 +17,6 @@ COPY --from=build /app/out ./
 
 ENV ASPNETCORE_URLS=http://+:8080
 ENV DOTNET_EnableDiagnostics=0
-
 EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "WebMekashron.dll"]

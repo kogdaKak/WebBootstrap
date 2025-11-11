@@ -15,7 +15,7 @@ builder.Services.Configure<BrotliCompressionProviderOptions>(o => o.Level = Syst
 var app = builder.Build();
 
 app.UseResponseCompression();
-
+app.UseDefaultFiles();
 app.UseStaticFiles(new StaticFileOptions
 {
     OnPrepareResponse = ctx =>
@@ -25,7 +25,6 @@ app.UseStaticFiles(new StaticFileOptions
     }
 });
 
-app.UseDefaultFiles();
 
 var port = Environment.GetEnvironmentVariable("PORT");
 if (!string.IsNullOrWhiteSpace(port))
