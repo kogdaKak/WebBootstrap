@@ -9,7 +9,6 @@
     font-size: 15px;
 }
 
-/* === HEADER === */
 .main-header {
     background-color: #ffffff;
     border: 1px solid #00000020;
@@ -17,6 +16,8 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     font-family: "Montserrat", sans-serif;
     transition: 0.3s;
+    position: relative;
+    z-index: 10;
 }
 
     .main-header .logo h4 {
@@ -24,7 +25,6 @@
         color: #3e4555;
     }
 
-    /* --- Кнопки навигации --- */
     .main-header .nav-item {
         position: relative;
         font-weight: 400;
@@ -36,7 +36,6 @@
         transition: color 0.3s ease;
     }
 
-        /* белый фон по умолчанию */
         .main-header .nav-item::before {
             content: "";
             position: absolute;
@@ -49,23 +48,19 @@
             border-radius: 6px;
         }
 
-        /* при наведении заполняем градиентом */
         .main-header .nav-item:hover::before {
             transform: scaleX(1);
         }
 
-        /* при этом текст становится белым */
         .main-header .nav-item:hover {
             color: #fff;
         }
 
-    /* чтобы текст был поверх градиента */
     .main-header .nav-item {
         position: relative;
-        z-index: 1;
+        z-index: 2;
     }
 
-/* На телефонах — элементы переходят в столбик */
 @media (max-width: 576px) {
     .main-header {
         text-align: center;
@@ -79,7 +74,6 @@
         }
 }
 
-/* --- Убираем hover-анимацию у кнопки в форме --- */
 .static-gradient {
     background: linear-gradient(to right, #ff4d7e 0%, #ff6a5b 100%) !important;
     transition: none !important;
@@ -91,3 +85,40 @@
         color: #fff !important;
     }
 
+#bg-compare {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+    #bg-compare .bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    #bg-compare .bg-right {
+        z-index: 1;
+    }
+
+    #bg-compare .bg-left {
+        z-index: 2;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+
+.bform, .bform .card {
+    position: relative;
+    z-index: 10;
+}
+
+body {
+    background: transparent !important;
+}

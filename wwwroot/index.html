@@ -70,6 +70,12 @@
 </head>
 
 <body>
+    <div id="bg-compare">
+        <img class="bg bg-left" src="images/1.jpg" alt="">
+        <img class="bg bg-right" src="images/2.jpg" alt="">
+        <div class="divider"></div>
+    </div>
+
     <header class="main-header container my-3 p-3 d-flex justify-content-between align-items-center flex-wrap">
         <div class="logo">
             <h4 class="m-0">WebAppi</h4>
@@ -144,6 +150,119 @@
                 showMessage("Ошибка: " + e.message, false);
             }
         }
+    </script>
+    <script>
+        (() => {
+            const left = document.querySelector('#bg-compare .bg-left');
+            const divider = document.querySelector('#bg-compare .divider');
+            if (!left || !divider) return;
+
+            // Скорость вращения: пол-оборота за 10 секунд (настрой)
+            const periodMs = 10000; // 10s на 180°
+            const fullTurnMs = periodMs * 2; // 20s на 360°
+
+            function computeSplitPolygon(angleRad, w, h) {
+                // Центр
+                const cx = w / 2, cy = h / 2;
+
+                // Нормаль к разделителю (куда "смотрит" полу-плоскость, которую будем ОСТАВЛЯТЬ)
+                const nx = Math.cos(angleRad);
+                const ny = Math.sin(angleRad);
+
+                // Направление линии-разделителя (перпендикуляр к нормали)
+                const vx = -Math.sin(angleRad);
+                const vy = Math.cos(angleRad);
+
+                // Находим две точки пересечения бесконечной линии с границами прямоугольника
+                const points = [];
+
+                function tryEdge(t, getX, getY) {
+                    if (!isFinite(t)) return;
+                    const x = getX(t), y = getY(t);
+                    if (x >= -0.5 && x <= w + 0.5 && y >= -0.5 && y <= h + 0.5) {
+                        points.push({ x, y });
+                    }
+                }
+
+                // Параметрическая линия: p = C + t * V
+                // Пересечения с четырьмя рёбрами
+                if (Math.abs(vx) > 1e-6) {
+                    // x = 0
+                    let t = (0 - cx) / vx;
+                    tryEdge(t, () => 0, (t) => cy + t * vy);
+                    // x = w
+                    t = (w - cx) / vx;
+                    tryEdge(t, () => w, (t) => cy + t * vy);
+                }
+                if (Math.abs(vy) > 1e-6) {
+                    // y = 0
+                    let t = (0 - cy) / vy;
+                    tryEdge(t, (t) => cx + t * vx, () => 0);
+                    // y = h
+                    t = (h - cy) / vy;
+                    tryEdge(t, (t) => cx + t * vx, () => h);
+                }
+
+                // Должны получить ровно 2 точки
+                if (points.length < 2) {
+                    // Фолбэк — показываем всё, чтобы не мигало
+                    return `polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)`;
+                }
+
+                const [p1, p2] = points;
+
+                // Выбираем какие углы прямоугольника относятся к "нашей" полу-плоскости:
+                // Оставляем сторону, где (P - C) · n <= 0  (можно поменять знак, если хочешь инверсию)
+                const corners = [
+                    { x: 0, y: 0 },
+                    { x: w, y: 0 },
+                    { x: w, y: h },
+                    { x: 0, y: h },
+                ].filter(pt => ((pt.x - cx) * nx + (pt.y - cy) * ny) <= 0);
+
+                // Собираем многоугольник: две точки пересечения + углы “нашей” половины.
+                const poly = [p1, p2, ...corners];
+
+                // Отсортируем точки по углу вокруг центра, чтобы порядок был корректным
+                poly.sort((a, b) => {
+                    const aa = Math.atan2(a.y - cy, a.x - cx);
+                    const bb = Math.atan2(b.y - cy, b.x - cx);
+                    return aa - bb;
+                });
+
+                // В процентах — для clip-path
+                const toPct = (x, y) => `${(x / w) * 100}% ${(y / h) * 100}%`;
+                const path = `polygon(${poly.map(p => toPct(p.x, p.y)).join(', ')})`;
+                return path;
+            }
+
+            let start = performance.now();
+
+            function tick(now) {
+                const w = window.innerWidth;
+                const h = window.innerHeight;
+
+                // Угол в радианах: вращаем по часовой стрелке
+                const elapsed = (now - start) % fullTurnMs;
+                const angle = (elapsed / fullTurnMs) * Math.PI * 2;
+
+                // Клипаем верхнюю картинку по половинной плоскости, вращая разделитель
+                const poly = computeSplitPolygon(angle, w, h);
+                left.style.clipPath = poly;
+
+                // Повернём визуальную линию
+                divider.style.transform = `translate(-50%, -50%) rotate(${(angle * 180 / Math.PI).toFixed(3)}deg)`;
+
+                requestAnimationFrame(tick);
+            }
+
+            // Реакция на ресайз: пересчитать клип
+            window.addEventListener('resize', () => {
+                start = performance.now(); // плавно перезапустим фазу
+            });
+
+            requestAnimationFrame(tick);
+        })();
     </script>
 </body>
 </html>
