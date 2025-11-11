@@ -2,29 +2,38 @@
 <html lang="ru">
 <head>
     <style>
-        body {
-            margin: 0;
+        html {
             font-family: system-ui, sans-serif;
-            background-color: #f8f9fa;
+            font-size-adjust: 0.52;
         }
 
-        header, .bform {
-            display: block;
-            text-align: center;
+        body {
+            font-family: 'Montserrat', system-ui, sans-serif;
+            font-size-adjust: 0.52;
         }
 
-        input, button {
-            display: inline-block;
-            padding: 10px;
-            font-size: 14px;
+        header.main-header {
+            min-height: 80px;
         }
     </style>
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Registration of users in WebAppi." />
-    <title>Registration</title>
-
+    <link rel="preload"
+          href="https://fonts.gstatic.com/s/montserrat/v25/JTU5jig1_1g3VHj43xQ.ttf.woff2"
+          as="font"
+          type="font/woff2"
+          crossorigin>
+    <link rel="preload"
+          href="https://fonts.gstatic.com/s/montserrat/v25/JTU5jig1_1g3VHj43xw.ttf.woff2"
+          as="font"
+          type="font/woff2"
+          crossorigin>
+    <link rel="preload"
+          href="https://fonts.gstatic.com/s/montserrat/v25/JTU5jig1_1g3VHj43xY.ttf.woff2"
+          as="font"
+          type="font/woff2"
+          crossorigin>
     <link rel="preload"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
           as="style"
@@ -35,10 +44,8 @@
               integrity="sha384-GtvbB0VfV7rQ7txzH+i0Zt5LB1NwFx7B6K9V7M3vNH1mFElA3Rz8kZ7RpUoH4f2H"
               crossorigin="anonymous">
     </noscript>
-
     <link rel="preload" href="index.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="index.css"></noscript>
-
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload"
@@ -48,6 +55,7 @@
     <noscript>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap">
     </noscript>
+    <title>Registration</title>
 </head>
 
 <body>

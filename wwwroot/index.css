@@ -1,7 +1,15 @@
-﻿body, html {
-    margin: 0;
-    padding: 0;
+﻿html {
+    font-family: system-ui, sans-serif;
+    font-size-adjust: 0.52;
 }
+
+body {
+    font-family: 'Montserrat', system-ui, sans-serif;
+    font-display: swap;
+    font-size-adjust: 0.52;
+}
+
+
 
 main {
     display: flex;
