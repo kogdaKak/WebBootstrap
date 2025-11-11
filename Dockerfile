@@ -1,15 +1,23 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-slim AS build
 WORKDIR /src
 
-COPY . .
+COPY *.csproj ./
+RUN dotnet restore
 
 RUN dotnet publish -c Release -o /app/out
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-slim AS runtime
 WORKDIR /app
 
-COPY --from=build /app/out .
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    brotli \
+ && rm -rf /var/lib/apt/lists/*
 
-ENV ASPNETCORE_URLS=http://+:${PORT}
+COPY --from=build /app/out ./
+
+ENV ASPNETCORE_URLS=http://+:8080
+ENV DOTNET_EnableDiagnostics=0
+
+EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "WebMekashron.dll"]
