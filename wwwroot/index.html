@@ -4,21 +4,33 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Регистрация пользователей в WebAppi. Простая форма, быстрая работа и современный интерфейс." />
-    <title>Registration — WebAppi</title>
+    <title>Registration</title>
 
-    <link rel="preload" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" as="style" onload="this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></noscript>
-
+    <link rel="preload"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          as="style"
+          onload="this.rel='stylesheet'">
+    <link rel="preload"
+          href="index.css"
+          as="style"
+          onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+              integrity="sha384-GtvbB0VfV7rQ7txzH+i0Zt5LB1NwFx7B6K9V7M3vNH1mFElA3Rz8kZ7RpUoH4f2H" 
+              crossorigin="anonymous">
+        <link rel="stylesheet" href="index.css">
+    </noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-reboot.min.css">
     <link rel="stylesheet" href="index.css" />
-
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <div id="bg-compare">
-        <img class="bg bg-left" src="images/1.webp" alt="background left" loading="lazy" decoding="async">
+        <img class="bg bg-left" src="images/1.webp" alt="background left" fetchpriority="high" decoding="async">
         <img class="bg bg-right" src="images/2.webp" alt="background right" loading="lazy" decoding="async">
         <div class="divider"></div>
     </div>
@@ -160,6 +172,5 @@
             requestAnimationFrame(tick);
         })();
     </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" defer></script>
 </body>
 </html>
