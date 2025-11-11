@@ -1,0 +1,17 @@
+{
+  "ExtendedData": {
+    "inputs": [
+      "http://isapi.mekashron.com/icu-tech/icutech-test.dll/wsdl/IICUTech"
+    ],
+    "collectionTypes": [
+      "System.Array",
+      "System.Collections.Generic.Dictionary`2"
+    ],
+    "internalTypeAccess": true,
+    "namespaceMappings": [
+      "*, ServiceReference"
+    ],
+    "targetFramework": "net9.0",
+    "typeReuseMode": "All"
+  }
+}

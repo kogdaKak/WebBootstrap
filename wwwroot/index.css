@@ -1,0 +1,93 @@
+﻿body, html {
+    margin: 0;
+    padding: 0;
+}
+
+#msgBox {
+    margin-top: 20px;
+    margin-bottom: 0;
+    font-size: 15px;
+}
+
+/* === HEADER === */
+.main-header {
+    background-color: #ffffff;
+    border: 1px solid #00000020;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    font-family: "Montserrat", sans-serif;
+    transition: 0.3s;
+}
+
+    .main-header .logo h4 {
+        font-weight: 500;
+        color: #3e4555;
+    }
+
+    /* --- Кнопки навигации --- */
+    .main-header .nav-item {
+        position: relative;
+        font-weight: 400;
+        text-decoration: none;
+        padding: 6px 14px;
+        border-radius: 6px;
+        color: #3e4555;
+        overflow: hidden;
+        transition: color 0.3s ease;
+    }
+
+        /* белый фон по умолчанию */
+        .main-header .nav-item::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, #ff4d7e 0%, #ff6a5b 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+            z-index: -1;
+            border-radius: 6px;
+        }
+
+        /* при наведении заполняем градиентом */
+        .main-header .nav-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* при этом текст становится белым */
+        .main-header .nav-item:hover {
+            color: #fff;
+        }
+
+    /* чтобы текст был поверх градиента */
+    .main-header .nav-item {
+        position: relative;
+        z-index: 1;
+    }
+
+/* На телефонах — элементы переходят в столбик */
+@media (max-width: 576px) {
+    .main-header {
+        text-align: center;
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+        .main-header .nav-links {
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+}
+
+/* --- Убираем hover-анимацию у кнопки в форме --- */
+.static-gradient {
+    background: linear-gradient(to right, #ff4d7e 0%, #ff6a5b 100%) !important;
+    transition: none !important;
+}
+
+    .static-gradient:hover {
+        background: linear-gradient(to right, #ff4d7e 0%, #ff6a5b 100%) !important;
+        transform: none !important;
+        color: #fff !important;
+    }
+

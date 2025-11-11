@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registration</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="index.css" />
+
+    <style>
+        @import url(//fonts.googleapis.com/css?family=Montserrat:300,400,500);
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: "Montserrat", sans-serif;
+            background: #f8f9fa;
+            color: #3e4555;
+        }
+
+        .bform {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+
+            .bform .card {
+                border: none;
+                border-radius: 12px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+                max-width: 400px;
+                width: 100%;
+                padding: 2rem 1.5rem;
+                background-color: #fff;
+            }
+
+            .bform h2 {
+                margin-bottom: 1rem;
+                font-weight: 400;
+                color: #3e4555;
+            }
+
+            .bform .btn-danger-gradiant {
+                background: linear-gradient(to right, #ff4d7e 0%, #ff6a5b 100%);
+                border: none;
+                color: white;
+                font-size: 16px;
+                font-weight: 500;
+                border-radius: 6px;
+                padding: 12px;
+                transition: 0.3s;
+            }
+
+                .bform .btn-danger-gradiant:hover {
+                    background: linear-gradient(to right, #ff6a5b 0%, #ff4d7e 100%);
+                    transform: translateY(-1px);
+                }
+
+        .fade-alert {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+            .fade-alert.show {
+                opacity: 1;
+            }
+    </style>
+</head>
+
+<body>
+    <header class="main-header container my-3 p-3 d-flex justify-content-between align-items-center flex-wrap">
+        <div class="logo">
+            <h4 class="m-0">WebAppi</h4>
+        </div>
+        <nav class="nav-links d-flex align-items-center flex-wrap">
+            <a href="https://hh.ru/resume/10f4e9f6ff090cdf7a0039ed1f424742775148" class="nav-item mx-2 text-dark">HH.ru</a>
+            <a href="https://github.com/kogdaKak/Minore" class="nav-item mx-2 text-dark">GitHub</a>
+        </nav>
+    </header>
+
+    <div class="bform">
+        <div class="card">
+            <h2>Registration</h2>
+            <form onsubmit="event.preventDefault(); RegisterNewCustomer();">
+                <div class="form-group text-left">
+                    <label for="login">Login</label>
+                    <input id="login" type="text" class="form-control" placeholder="login" required />
+                </div>
+
+                <div class="form-group text-left">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" class="form-control" placeholder="password" required />
+                </div>
+
+                <button type="submit" class="btn btn-danger-gradiant btn-block static-gradient">Create</button>
+            </form>
+
+            <div id="msgBox" class="alert fade-alert d-none" role="alert"></div>
+        </div>
+    </div>
+
+    <script>
+        function showMessage(text, ok) {
+            const box = document.getElementById("msgBox");
+            box.classList.remove("d-none", "alert-success", "alert-danger", "show");
+            box.classList.add(ok ? "alert-success" : "alert-danger");
+            box.textContent = text;
+
+            requestAnimationFrame(() => box.classList.add("show"));
+            setTimeout(() => {
+                box.classList.remove("show");
+                setTimeout(() => box.classList.add("d-none"), 500);
+            }, 4000);
+        }
+
+        async function RegisterNewCustomer() {
+            const loginInput = document.getElementById("login");
+            const passInput = document.getElementById("password");
+            const login = loginInput.value.trim();
+            const password = passInput.value.trim();
+
+            if (!login || !password) {
+                showMessage("Введите логин и пароль", false);
+                return;
+            }
+
+            try {
+                const response = await fetch("/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ login, password })
+                });
+
+                const result = await response.json();
+                showMessage(result.message, result.ok);
+
+                if (result.ok) {
+                    loginInput.value = "";
+                    passInput.value = "";
+                }
+            } catch (e) {
+                showMessage("Ошибка: " + e.message, false);
+            }
+        }
+    </script>
+</body>
+</html>
